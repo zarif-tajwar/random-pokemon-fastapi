@@ -14,6 +14,13 @@ async def get_random_pokemon():
         response = await client.get(url)
         if response.status_code == 200:
             pokemon_data = response.json()
-            return pokemon_data
+            return {
+                "id": pokemon_data["id"],
+                "name": pokemon_data["name"],
+                "types": [type["type"]["name"] for type in pokemon_data["types"]],
+                "abilities": [
+                    ability["ability"]["name"] for ability in pokemon_data["abilities"]
+                ],
+            }
         else:
             return {"error": "Failed to fetch Pokémon data"}
